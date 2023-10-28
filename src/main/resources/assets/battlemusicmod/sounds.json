@@ -1,0 +1,8 @@
+{
+  "PLAYER_HURT": {
+    "subtitles": "sounds.battlemusicmod.desertbmusic",
+    "sounds": [
+      "battlemusicmod:desertbmusic"
+    ]
+  }
+}
