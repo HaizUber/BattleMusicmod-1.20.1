@@ -9,12 +9,11 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class combatsoundreg {
+public class ModSounds {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
             DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, battlemusic.MOD_ID);
 
-    public static final RegistryObject<SoundEvent> UNIV_BRAWL = registerSoundEvents("univ_brawl");
-
+    public static final RegistryObject<SoundEvent> BATTLE_MUSIC_UNIV = registerSoundEvents("battle_music_1");
 
     private static RegistryObject<SoundEvent> registerSoundEvents(String name) {
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(battlemusic.MOD_ID, name)));

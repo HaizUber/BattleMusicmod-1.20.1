@@ -1,8 +1,8 @@
 {
-  "bar_brawl": {
+  "battle_music_1": {
     "sounds": [
       {
-        "name": "combatmusicgenshin:bar_brawl",
+        "name": "battlemusicmod:univ_brawl",
         "stream": true
       }
     ]
