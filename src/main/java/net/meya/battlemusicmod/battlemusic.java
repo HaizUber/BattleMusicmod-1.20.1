@@ -102,19 +102,19 @@ public class battlemusic {
     }
 
     private SimpleSoundInstance pickSound(RandomSource rand) {
-        // Use the registered sound events from ModSounds
-        SoundEvent[] sounds = {
-                ModSounds.BATTLE_MUSIC_UNIV.get(),
-                ModSounds.BATTLE_MUSIC_UNIV.get()
+        // Replace with your list of sound event names
+        final String[] sounds = {
+                "battlemusicmod:battle_music_1",
+                "minecraft:music_disc.pigstep"
+
         };
 
         final int idx = rand.nextInt(sounds.length);
-        SoundEvent sound = sounds[idx];
-
+        final String selectedSoundName = sounds[idx];
+        final SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(sounds[idx]));
         if (sound == null) {
-            throw new NullPointerException("Invalid sound event: The selected sound event is null.");
+            throw new NullPointerException("Invalid sound event resource location detected: " + selectedSoundName);
         }
-
         return SimpleSoundInstance.forMusic(sound);
     }
 }
