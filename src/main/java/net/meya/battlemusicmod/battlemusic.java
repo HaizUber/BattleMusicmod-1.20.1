@@ -105,7 +105,8 @@ public class battlemusic {
         // Replace with your list of sound event names
         final String[] sounds = {
                 "battlemusicmod:battle_music_1",
-                "minecraft:music_disc.pigstep"
+                "minecraft:music_disc.pigstep",
+                "minecraft:music_disc.mellohi"
 
         };
 
