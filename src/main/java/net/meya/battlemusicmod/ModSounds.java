@@ -10,16 +10,16 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModSounds {
-    public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
-            DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, battlemusic.MOD_ID);
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, "battlemusic");
 
-    public static final RegistryObject<SoundEvent> BATTLE_MUSIC_UNIV = registerSoundEvents("battle_music_1");
+    public static final RegistryObject<SoundEvent> UNIV_BRAWL = SOUNDS.register(
+            "combatmusic", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(battlemusic.MOD_ID, "univ_brawl")));
 
-    private static RegistryObject<SoundEvent> registerSoundEvents(String name) {
-        return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(battlemusic.MOD_ID, name)));
-    }
+
 
     public static void register(IEventBus eventBus) {
-        SOUND_EVENTS.register(eventBus);
+        SOUNDS.register(eventBus);
     }
+
 }
+
