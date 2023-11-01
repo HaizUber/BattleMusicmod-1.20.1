@@ -26,6 +26,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraft.client.resources.sounds.SoundInstance;
 
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.slf4j.Logger;
@@ -34,17 +35,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.fml.LogicalSide;
 import org.apache.logging.log4j.LogManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.sounds.SoundManager;
+
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("battlemusic")
 public class battlemusic {
     public static final String MOD_ID = "battlemusic";
     public static final Logger LOGGER = LogUtils.getLogger();
+    private SoundInstance lastSound;
 
     public int decaySeconds = 0;
-    public SimpleSoundInstance lastSound;
 
     public battlemusic() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -68,6 +74,7 @@ public class battlemusic {
             // Add your creative tab contents here
         }
     }
+
     @SubscribeEvent
     public void onAttack(final LivingAttackEvent event) {
         LivingEntity entity = event.getEntity();
@@ -79,26 +86,24 @@ public class battlemusic {
 
                 LOGGER.info("Hostile Mobs Nearby: " + hostileMobs);
 
-                if (hostileMobs > 0) {
-                    if (!manager.isActive(lastSound)) {
-                        LOGGER.info("Attempting to play custom sound");
-                        playCustomSound(); // Call the custom method to play the sound
-                        decaySeconds = 0;
-                    }
-                } else {
-                    LOGGER.info("No hostile mobs nearby");
-                    // If there are no hostile mobs within 15 blocks, stop the sound
-                    if (manager.isActive(lastSound)) {
+                // If there are no hostile mobs within 15 blocks, stop the battle music
+                if (hostileMobs == 0) {
+                    if (lastSound != null && manager.isActive(lastSound)) {
                         LOGGER.info("Stopping the custom sound");
                         manager.stop(lastSound);
                         lastSound = null;
                     }
                 }
+
+                // Otherwise, start the battle music if it is not already playing
+                else if (lastSound == null || !manager.isActive(lastSound)) {
+                    LOGGER.info("Attempting to play custom sound");
+                    playCustomSound(); // Call the custom method to play the sound
+                    decaySeconds = 0;
+                }
             }
         }
     }
-
-
 
     private int getEntities(LocalPlayer player) {
         return player.clientLevel.getEntitiesOfClass(Monster.class, new AABB(-12D, -10D, -12D, 12D, 10D, 12D).move(player.getX(), player.getY(), player.getZ()), mob -> mob.canAttack(player)).size();
@@ -110,7 +115,7 @@ public class battlemusic {
         SoundManager manager = mc.getSoundManager();
 
         // Replace with your registered SoundEvent
-        SoundEvent soundEvent = ModSounds.UNIV_BRAWL.get();
+        SoundEvent soundEvent = SoundEvent.battlemusic_battle_music_1;
 
         if (soundEvent == null) {
             LOGGER.error("SoundEvent is null. Make sure it's properly registered.");
@@ -121,12 +126,7 @@ public class battlemusic {
         LOGGER.info("Attempting to play sound: " + soundLocation.toString());
 
 
-
         SimpleSoundInstance soundInstance = SimpleSoundInstance.forMusic(soundEvent);
         manager.play(soundInstance);
     }
-
-
-
-
 }
