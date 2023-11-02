@@ -86,24 +86,28 @@ public class battlemusic {
 
                 LOGGER.info("Hostile Mobs Nearby: " + hostileMobs);
 
-                // If there are no hostile mobs within 15 blocks, stop the battle music
-                if (hostileMobs == 0) {
-                    if (lastSound != null && manager.isActive(lastSound)) {
+                if (hostileMobs > 0) {
+                    if (!manager.isActive(lastSound)) {
+                        LOGGER.info("Attempting to play custom sound");
+                        LOGGER.info("lastSound: " + lastSound); // Debugging statement
+                        playCustomSound(); // Call the custom method to play the sound
+                        decaySeconds = 0;
+                    }
+                } else {
+                    LOGGER.info("No hostile mobs nearby");
+                    LOGGER.info("lastSound: " + lastSound); // Debugging statement
+                    // If there are no hostile mobs within 15 blocks, stop the sound
+                    if (manager.isActive(lastSound)) {
                         LOGGER.info("Stopping the custom sound");
                         manager.stop(lastSound);
                         lastSound = null;
                     }
                 }
-
-                // Otherwise, start the battle music if it is not already playing
-                else if (lastSound == null || !manager.isActive(lastSound)) {
-                    LOGGER.info("Attempting to play custom sound");
-                    playCustomSound(); // Call the custom method to play the sound
-                    decaySeconds = 0;
-                }
             }
         }
     }
+
+
 
     private int getEntities(LocalPlayer player) {
         return player.clientLevel.getEntitiesOfClass(Monster.class, new AABB(-12D, -10D, -12D, 12D, 10D, 12D).move(player.getX(), player.getY(), player.getZ()), mob -> mob.canAttack(player)).size();
@@ -115,7 +119,7 @@ public class battlemusic {
         SoundManager manager = mc.getSoundManager();
 
         // Replace with your registered SoundEvent
-        SoundEvent soundEvent = SoundEvent.battlemusic_battle_music_1;
+        SoundEvent soundEvent = ModSounds.UNIV_BRAWL.get();
 
         if (soundEvent == null) {
             LOGGER.error("SoundEvent is null. Make sure it's properly registered.");
@@ -125,8 +129,14 @@ public class battlemusic {
         ResourceLocation soundLocation = soundEvent.getLocation();
         LOGGER.info("Attempting to play sound: " + soundLocation.toString());
 
-
         SimpleSoundInstance soundInstance = SimpleSoundInstance.forMusic(soundEvent);
         manager.play(soundInstance);
+
+        // Assign the soundInstance to lastSound
+        lastSound = soundInstance;
     }
+
+
+
+
 }
