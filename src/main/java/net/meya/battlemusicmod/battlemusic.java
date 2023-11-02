@@ -107,18 +107,13 @@ public class battlemusic {
         }
     }
 
-
-
     private int getEntities(LocalPlayer player) {
         return player.clientLevel.getEntitiesOfClass(Monster.class, new AABB(-12D, -10D, -12D, 12D, 10D, 12D).move(player.getX(), player.getY(), player.getZ()), mob -> mob.canAttack(player)).size();
     }
-
-
     private void playCustomSound() {
         Minecraft mc = Minecraft.getInstance();
         SoundManager manager = mc.getSoundManager();
 
-        // Replace with your registered SoundEvent
         SoundEvent soundEvent = ModSounds.UNIV_BRAWL.get();
 
         if (soundEvent == null) {
@@ -132,11 +127,6 @@ public class battlemusic {
         SimpleSoundInstance soundInstance = SimpleSoundInstance.forMusic(soundEvent);
         manager.play(soundInstance);
 
-        // Assign the soundInstance to lastSound
         lastSound = soundInstance;
     }
-
-
-
-
 }
