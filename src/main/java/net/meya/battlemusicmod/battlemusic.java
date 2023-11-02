@@ -7,41 +7,21 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraft.client.resources.sounds.SoundInstance;
-
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.slf4j.Logger;
-import org.apache.logging.log4j.LogManager;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.phys.AABB;
-import org.apache.logging.log4j.LogManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.client.sounds.SoundManager;
-
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("battlemusic")
@@ -118,6 +98,7 @@ public class battlemusic {
 
         if (soundEvent == null) {
             LOGGER.error("SoundEvent is null. Make sure it's properly registered.");
+            // Handle the case where the sound event is null (e.g., play a default sound or log an error)
             return;
         }
 
@@ -129,4 +110,5 @@ public class battlemusic {
 
         lastSound = soundInstance;
     }
+
 }
