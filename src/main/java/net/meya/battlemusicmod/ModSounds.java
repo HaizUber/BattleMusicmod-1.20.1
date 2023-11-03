@@ -12,6 +12,8 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> UNIV_BRAWL = SOUNDS.register(
             "univ_brawl", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(battlemusic.MOD_ID, "univ_brawl")));
+    public static final RegistryObject<SoundEvent> PLAINS_BRAWL = SOUNDS.register(
+            "plains_brawl", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(battlemusic.MOD_ID, "plains_brawl")));
 
 
 

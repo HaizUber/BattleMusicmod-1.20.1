@@ -75,6 +75,7 @@ public class battlemusic {
                     playCustomSound(); // Call the custom method to play the sound
                     decaySeconds = 0;
                 }
+
             } else {
                 LOGGER.info("No hostile mobs nearby");
                 LOGGER.info("lastSound: " + lastSound); // Debugging statement
@@ -92,11 +93,13 @@ public class battlemusic {
     private int getEntities(LocalPlayer player) {
         return player.clientLevel.getEntitiesOfClass(Monster.class, new AABB(-12D, -10D, -12D, 12D, 10D, 12D).move(player.getX(), player.getY(), player.getZ()), mob -> mob.canAttack(player)).size();
     }
+
+
     private void playCustomSound() {
         Minecraft mc = Minecraft.getInstance();
         SoundManager manager = mc.getSoundManager();
 
-        SoundEvent soundEvent = ModSounds.UNIV_BRAWL.get();
+        SoundEvent soundEvent = ModSounds.PLAINS_BRAWL.get();
 
         if (soundEvent == null) {
             LOGGER.error("SoundEvent is null. Make sure it's properly registered.");
