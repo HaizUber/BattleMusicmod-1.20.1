@@ -2,7 +2,7 @@
   "univ_brawl": {
     "sounds": [
       {
-        "name": "battlemusicmod:univ_brawl",
+        "name": "battlemusic:univ_brawl",
         "stream": true
       }
     ]

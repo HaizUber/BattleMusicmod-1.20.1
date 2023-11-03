@@ -14,9 +14,9 @@ public class ModCreativeModTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, battlemusic.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> TUTORIAL_TAB = CREATIVE_MODE_TABS.register("tutorial_tab",
+    public static final RegistryObject<CreativeModeTab> BATTLEMUSIC_TAB = CREATIVE_MODE_TABS.register("battlemusic_tab",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.UNIV_BRAWL_MUSIC_DISC.get()))
-                    .title(Component.translatable("creativetab.tutorial_tab"))
+                    .title(Component.translatable("creativetab.battlemusic_tab"))
                     .displayItems((pParameters, pOutput) -> {
 
 
