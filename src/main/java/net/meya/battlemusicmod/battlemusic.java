@@ -5,17 +5,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,8 +25,10 @@ import net.minecraftforge.event.TickEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -62,6 +63,7 @@ public class battlemusic {
             // Add your creative tab contents here
         }
     }
+    //inspiration from erussianguy's combat music mod
     private Timer delayTimer = new Timer();
     @SubscribeEvent
     public void onClientTick(final TickEvent.ClientTickEvent event) {
@@ -87,6 +89,13 @@ public class battlemusic {
                         }
                     }, 5000); // 5000 milliseconds = 5 seconds
                 }
+            }
+
+            // Get the player object from Minecraft
+            Player player = mc.player;
+
+            if (player != null) {
+                logCurrentBiomeClassName(player);
             }
         }
     }
@@ -116,5 +125,30 @@ public class battlemusic {
 
         lastSound = soundInstance;
     }
+    //inspiration from yungnickyoung's travelertitles
+    private String getCurrentBiomeClassName(Player player) {
+        Level level = player.level();
+        BlockPos playerPos = player.blockPosition();
+        BiomeManager biomeManager = level.getBiomeManager();
+        Holder<Biome> currentBiomeHolder = biomeManager.getBiome(playerPos);
+
+        if (currentBiomeHolder != null) {
+            Biome currentBiome = currentBiomeHolder.get();
+            if (currentBiome != null) {
+                ResourceLocation biomeBaseKey = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(currentBiome);
+                return biomeBaseKey.toString(); // Return the ResourceLocation as a string
+            } else {
+                return "Unknown Biome";
+            }
+        } else {
+            return "Unknown Biome";
+        }
+    }
+
+    public void logCurrentBiomeClassName(Player player) {
+        String playerBiomeClassName = getCurrentBiomeClassName(player);
+        LOGGER.info("Player is currently in biome: " + playerBiomeClassName);
+    }
+
 
 }
