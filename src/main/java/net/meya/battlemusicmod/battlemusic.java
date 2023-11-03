@@ -25,7 +25,10 @@ import org.slf4j.Logger;
 import net.minecraftforge.event.TickEvent;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.Registries;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("battlemusic")
@@ -91,6 +94,7 @@ public class battlemusic {
     private int getEntities(LocalPlayer player) {
         return player.clientLevel.getEntitiesOfClass(Monster.class, new AABB(-12D, -10D, -12D, 12D, 10D, 12D).move(player.getX(), player.getY(), player.getZ()), mob -> mob.canAttack(player)).size();
     }
+
 
     private void playCustomSound() {
         Minecraft mc = Minecraft.getInstance();
