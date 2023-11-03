@@ -1,8 +1,8 @@
 {
-  "univ_brawl": {
+  "desert_brawl": {
     "sounds": [
       {
-        "name": "battlemusic:univ_brawl",
+        "name": "battlemusic:desert_brawl",
         "stream": true
       }
     ]

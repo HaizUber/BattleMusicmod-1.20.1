@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.sounds.SoundEngine;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,7 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.slf4j.Logger;
 import net.minecraftforge.event.TickEvent;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import net.minecraft.world.level.biome.Biome;
@@ -30,6 +32,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("battlemusic")
@@ -75,7 +78,9 @@ public class battlemusic {
 
             if (hostileMobs > 0) {
                 if (!manager.isActive(lastSound)) {
-                    playCustomSound(); // Call the custom method to play the sound
+                    // Pass the Player object to playCustomSound
+                    playCustomSound(mc.player);
+
                     decaySeconds = 0;
                 }
             } else {
@@ -105,11 +110,29 @@ public class battlemusic {
     }
 
 
-    private void playCustomSound() {
+    private void playCustomSound(Player player) {
         Minecraft mc = Minecraft.getInstance();
         SoundManager manager = mc.getSoundManager();
+        SoundEvent soundEvent;
 
-        SoundEvent soundEvent = ModSounds.PLAINS_BRAWL.get();
+        String playerBiomeClassName = getCurrentBiomeClassName(player);
+
+        // Determine the current biome and select the appropriate sound event
+        if ("minecraft:desert".equals(playerBiomeClassName) ||
+                "minecraft:badlands".equals(playerBiomeClassName) ||
+                "minecraft:wooded_badlands".equals(playerBiomeClassName) ||
+                "minecraft:eroded_badlands".equals(playerBiomeClassName) ||
+                "minecraft:savanna".equals(playerBiomeClassName) ||
+                "minecraft:savanna_plateau".equals(playerBiomeClassName) ||
+                "minecraft:windswept_savanna".equals(playerBiomeClassName)) {
+            soundEvent = ModSounds.DESERT_BRAWL.get();
+        } else if ("minecraft:plains".equals(playerBiomeClassName) ||
+                "minecraft:sunflower_plains".equals(playerBiomeClassName)) {
+            soundEvent = ModSounds.PLAINS_BRAWL.get();
+        } else {
+            LOGGER.error("No sound event defined for the current biome: " + playerBiomeClassName);
+            return; // Handle cases where no sound event is defined
+        }
 
         if (soundEvent == null) {
             LOGGER.error("SoundEvent is null. Make sure it's properly registered.");
@@ -118,13 +141,13 @@ public class battlemusic {
         }
 
         ResourceLocation soundLocation = soundEvent.getLocation();
-        LOGGER.info("Attempting to play sound: " + soundLocation.toString());
 
         SimpleSoundInstance soundInstance = SimpleSoundInstance.forMusic(soundEvent);
         manager.play(soundInstance);
 
         lastSound = soundInstance;
     }
+
     //inspiration from yungnickyoung's travelertitles
     private String getCurrentBiomeClassName(Player player) {
         Level level = player.level();
@@ -147,7 +170,6 @@ public class battlemusic {
 
     public void logCurrentBiomeClassName(Player player) {
         String playerBiomeClassName = getCurrentBiomeClassName(player);
-        LOGGER.info("Player is currently in biome: " + playerBiomeClassName);
     }
 
 

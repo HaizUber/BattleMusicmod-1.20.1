@@ -11,7 +11,7 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, "battlemusic");
 
     public static final RegistryObject<Item> UNIV_BRAWL_MUSIC_DISC = ITEMS.register("univ_brawl_music_disc",
-            () -> new RecordItem(6, ModSounds.UNIV_BRAWL, new Item.Properties().stacksTo(1), 4840));
+            () -> new RecordItem(6, ModSounds.DESERT_BRAWL, new Item.Properties().stacksTo(1), 4840));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
