@@ -22,6 +22,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.slf4j.Logger;
+import net.minecraftforge.event.TickEvent;
+
+
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("battlemusic")
@@ -43,6 +46,7 @@ public class battlemusic {
         modEventBus.addListener(this::addCreative);
 
         MinecraftForge.EVENT_BUS.register(this);
+
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -56,36 +60,34 @@ public class battlemusic {
     }
 
     @SubscribeEvent
-    public void onAttack(final LivingAttackEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (entity instanceof LocalPlayer player) {
-            Minecraft mc = Minecraft.getInstance();
+    public void onClientTick(final TickEvent.ClientTickEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (event.phase == TickEvent.Phase.END && mc.level != null && mc.level.getDifficulty() != Difficulty.PEACEFUL) {
             SoundManager manager = mc.getSoundManager();
-            if (mc.level != null && mc.level.getDifficulty() != Difficulty.PEACEFUL) {
-                int hostileMobs = getEntities(player);
+            int hostileMobs = getEntities(mc.player);
 
-                LOGGER.info("Hostile Mobs Nearby: " + hostileMobs);
+            LOGGER.info("Hostile Mobs Nearby: " + hostileMobs);
 
-                if (hostileMobs > 0) {
-                    if (!manager.isActive(lastSound)) {
-                        LOGGER.info("Attempting to play custom sound");
-                        LOGGER.info("lastSound: " + lastSound); // Debugging statement
-                        playCustomSound(); // Call the custom method to play the sound
-                        decaySeconds = 0;
-                    }
-                } else {
-                    LOGGER.info("No hostile mobs nearby");
+            if (hostileMobs > 0) {
+                if (!manager.isActive(lastSound)) {
+                    LOGGER.info("Attempting to play custom sound");
                     LOGGER.info("lastSound: " + lastSound); // Debugging statement
-                    // If there are no hostile mobs within 15 blocks, stop the sound
-                    if (manager.isActive(lastSound)) {
-                        LOGGER.info("Stopping the custom sound");
-                        manager.stop(lastSound);
-                        lastSound = null;
-                    }
+                    playCustomSound(); // Call the custom method to play the sound
+                    decaySeconds = 0;
+                }
+            } else {
+                LOGGER.info("No hostile mobs nearby");
+                LOGGER.info("lastSound: " + lastSound); // Debugging statement
+                // If there are no hostile mobs nearby, stop the sound
+                if (manager.isActive(lastSound)) {
+                    LOGGER.info("Stopping the custom sound");
+                    manager.stop(lastSound);
+                    lastSound = null;
                 }
             }
         }
     }
+
 
     private int getEntities(LocalPlayer player) {
         return player.clientLevel.getEntitiesOfClass(Monster.class, new AABB(-12D, -10D, -12D, 12D, 10D, 12D).move(player.getX(), player.getY(), player.getZ()), mob -> mob.canAttack(player)).size();
