@@ -23,7 +23,8 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.slf4j.Logger;
 import net.minecraftforge.event.TickEvent;
-
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -58,42 +59,38 @@ public class battlemusic {
             // Add your creative tab contents here
         }
     }
-
+    private Timer delayTimer = new Timer();
     @SubscribeEvent
     public void onClientTick(final TickEvent.ClientTickEvent event) {
         Minecraft mc = Minecraft.getInstance();
+
         if (event.phase == TickEvent.Phase.END && mc.level != null && mc.level.getDifficulty() != Difficulty.PEACEFUL) {
             SoundManager manager = mc.getSoundManager();
             int hostileMobs = getEntities(mc.player);
 
-            LOGGER.info("Hostile Mobs Nearby: " + hostileMobs);
-
             if (hostileMobs > 0) {
                 if (!manager.isActive(lastSound)) {
-                    LOGGER.info("Attempting to play custom sound");
-                    LOGGER.info("lastSound: " + lastSound); // Debugging statement
                     playCustomSound(); // Call the custom method to play the sound
                     decaySeconds = 0;
                 }
-
             } else {
-                LOGGER.info("No hostile mobs nearby");
-                LOGGER.info("lastSound: " + lastSound); // Debugging statement
-                // If there are no hostile mobs nearby, stop the sound
+                // If there are no hostile mobs nearby, stop the sound after a 5-second delay
                 if (manager.isActive(lastSound)) {
-                    LOGGER.info("Stopping the custom sound");
-                    manager.stop(lastSound);
-                    lastSound = null;
+                    delayTimer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            manager.stop(lastSound);
+                            lastSound = null;
+                        }
+                    }, 5000); // 5000 milliseconds = 5 seconds
                 }
             }
         }
     }
 
-
     private int getEntities(LocalPlayer player) {
         return player.clientLevel.getEntitiesOfClass(Monster.class, new AABB(-12D, -10D, -12D, 12D, 10D, 12D).move(player.getX(), player.getY(), player.getZ()), mob -> mob.canAttack(player)).size();
     }
-
 
     private void playCustomSound() {
         Minecraft mc = Minecraft.getInstance();
