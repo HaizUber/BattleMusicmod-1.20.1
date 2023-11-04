@@ -3,7 +3,8 @@
     "sounds": [
       {
         "name": "battlemusic:desert_brawl",
-        "stream": true
+        "stream": true,
+        "category": "ambient"
       }
     ]
   },
@@ -11,7 +12,8 @@
     "sounds": [
       {
         "name": "battlemusic:plains_brawl",
-        "stream": true
+        "stream": true,
+        "category": "ambient"
       }
     ]
   }
