@@ -6,3 +6,4 @@ Roadmap:
 - Add each music as a music disc
 - Support modded biomes!
 - Support more Forge Versions
+- Deploy on Fabric as well!
