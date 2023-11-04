@@ -15,12 +15,12 @@ public class ModCreativeModTabs {
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, battlemusic.MOD_ID);
 
     public static final RegistryObject<CreativeModeTab> BATTLEMUSIC_TAB = CREATIVE_MODE_TABS.register("battlemusic_tab",
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.UNIV_BRAWL_MUSIC_DISC.get()))
-                    .title(Component.translatable("creativetab.battlemusic_tab"))
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.DESERT_BRAWL_MUSIC_DISC.get()))
+                    .title(Component.translatable("itemGroup.battlemusic_tab"))
                     .displayItems((pParameters, pOutput) -> {
 
 
-                        pOutput.accept(ModItems.UNIV_BRAWL_MUSIC_DISC.get());
+                        pOutput.accept(ModItems.DESERT_BRAWL_MUSIC_DISC.get());
 
                     })
                     .build());

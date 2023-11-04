@@ -21,9 +21,9 @@ public class ModItemTagGenerator extends ItemTagsProvider {
     protected void addTags(HolderLookup.Provider pProvider) {
 
         this.tag(ItemTags.MUSIC_DISCS)
-                .add(ModItems.UNIV_BRAWL_MUSIC_DISC.get());
+                .add(ModItems.DESERT_BRAWL_MUSIC_DISC.get());
 
         this.tag(ItemTags.CREEPER_DROP_MUSIC_DISCS)
-                .add(ModItems.UNIV_BRAWL_MUSIC_DISC.get());
+                .add(ModItems.DESERT_BRAWL_MUSIC_DISC.get());
     }
 }

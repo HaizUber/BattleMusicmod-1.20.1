@@ -24,7 +24,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
 
-        simpleItem(ModItems.UNIV_BRAWL_MUSIC_DISC);
+        simpleItem(ModItems.DESERT_BRAWL_MUSIC_DISC);
 
     }
 
