@@ -1,2 +1,7 @@
 # BattleMusicmod-1.20.1
-Adds battle music to minecraft when being attacked/attacking hostile mobs, plans are so far to include a time when the music decays out of combat
+Adds battle music to minecraft when being in range of hostile mobs
+
+Roadmap:
+- Add more music! (GENSHIN THEMED)/(SKYRIM THEMED) [MORE SUGGESTIONS]
+- Add each music as a music disc
+- Support modded biomes!
