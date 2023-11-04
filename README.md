@@ -5,3 +5,4 @@ Roadmap:
 - Add more music! (GENSHIN THEMED)/(SKYRIM THEMED) [MORE SUGGESTIONS]
 - Add each music as a music disc
 - Support modded biomes!
+- Support more Forge Versions
