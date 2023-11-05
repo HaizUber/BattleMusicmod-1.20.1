@@ -66,6 +66,8 @@ public class battlemusic {
     }
     //inspiration from erussianguy's combat music mod
     private Timer delayTimer = new Timer();
+    private TimerTask stopSoundTask; // Add a member variable to keep track of the scheduled task
+
     @SubscribeEvent
     public void onClientTick(final TickEvent.ClientTickEvent event) {
         Minecraft mc = Minecraft.getInstance();
@@ -74,23 +76,30 @@ public class battlemusic {
             SoundManager manager = mc.getSoundManager();
             int hostileMobs = getEntities(mc.player);
 
-            if (hostileMobs > 0) {
+            if (hostileMobs > 3) {
                 if (!manager.isActive(lastSound)) {
                     // Pass the Player object to playCustomSound
                     playCustomSound(mc.player);
-
                     decaySeconds = 0;
+
+                    // Cancel the scheduled task if there's any
+                    if (stopSoundTask != null) {
+                        stopSoundTask.cancel();
+                        stopSoundTask = null;
+                    }
                 }
             } else {
-                // If there are no hostile mobs nearby, stop the sound after a 5-second delay
-                if (manager.isActive(lastSound)) {
-                    delayTimer.schedule(new TimerTask() {
+                // If there are no hostile mobs nearby, schedule sound stop after 5 seconds
+                if (manager.isActive(lastSound) && stopSoundTask == null) {
+                    stopSoundTask = new TimerTask() {
                         @Override
                         public void run() {
                             manager.stop(lastSound);
                             lastSound = null;
+                            stopSoundTask = null;
                         }
-                    }, 5000); // 5000 milliseconds = 5 seconds
+                    };
+                    delayTimer.schedule(stopSoundTask, 5000); // 5000 milliseconds = 5 seconds
                 }
             }
 
@@ -164,7 +173,7 @@ public class battlemusic {
             return "Unknown Biome";
         }
     }
-
+//left for debugging purpose
     public void logCurrentBiomeClassName(Player player) {
         String playerBiomeClassName = getCurrentBiomeClassName(player);
     }
