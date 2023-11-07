@@ -1,11 +1,10 @@
 package net.meya.battlemusicmod;
 
-import net.meya.battlemusicmod.battlemusic;
+import net.meya.battlemusicmod.item.ModItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -21,6 +20,7 @@ public class ModCreativeModTabs {
 
 
                         pOutput.accept(ModItems.DESERT_BRAWL_MUSIC_DISC.get());
+                        pOutput.accept(ModItems.PLAINS_BRAWL_MUSIC_DISC.get());
 
                     })
                     .build());
